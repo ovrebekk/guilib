@@ -54,6 +54,35 @@ public class GuiRectangle {
         mPivot = pivot;
     }
 
+    // Copy constructor
+    public GuiRectangle(GuiRectangle guiRectangle){
+        mPosX = new GuiDimension(guiRectangle.mPosX);
+        mPosY = new GuiDimension(guiRectangle.mPosY);
+        mWidth = new GuiDimension(guiRectangle.mWidth);
+        mHeight = new GuiDimension(guiRectangle.mHeight);
+
+        // This might just set the reference. Probably OK if you don't change the pivot dynamically
+        mPivot = guiRectangle.mPivot;
+    }
+
+    public GuiRectangle offsetClone(int x, int y){
+        GuiRectangle offsetRectangle = new GuiRectangle(this);
+        offsetRectangle.mPosX.add(new GuiDimension((float)x));
+        offsetRectangle.mPosY.add(new GuiDimension((float)y));
+        return offsetRectangle;
+    }
+
+    public void setX(String x){ mPosX = new GuiDimension(x);}
+
+    public void setY(String y) { mPosY = new GuiDimension(y);}
+
+    public void setW(String w) { mWidth = new GuiDimension(w);}
+    public void setW(float w){ mWidth = new GuiDimension(w); }
+
+    public void setH(String h) { mHeight = new GuiDimension(h);}
+    public void setH(float h){ mHeight = new GuiDimension(h); }
+
+
     public float getX(){
         return mCachedX;
     }
@@ -130,6 +159,10 @@ public class GuiRectangle {
                     mCachedY = parent.getRegion().getY() + mPosY.getPixelDimension() - mHeight.getPixelDimension();
                     break;
 
+                case CENTER:
+                    mCachedX = parent.getRegion().getX() + mPosX.getPixelDimension() - (mWidth.getPixelDimension() / 2);
+                    mCachedY = parent.getRegion().getY() + mPosY.getPixelDimension() - (mHeight.getPixelDimension() / 2);
+                    break;
 
                 default:
                     Gdx.app.log("GuiRectangle", "PivotPoint type not implemented!!!");

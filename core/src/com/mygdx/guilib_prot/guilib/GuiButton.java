@@ -1,40 +1,68 @@
 package com.mygdx.guilib_prot.guilib;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.XmlReader;
 
 /**
  * Created by ovreb on 31.05.2016.
  */
 public class GuiButton extends GuiElement {
-    GuiDrawable     mImgBackground;
-    GuiDrawable     mImgPressed;
     String          mText;
-    GuiButtonStyle  mStyle;
 
     // Button state variables
     boolean mPressed = false;
+    boolean mSelected = false;
 
+    @Deprecated
     public GuiButton(GuiButtonStyle style, String text, GuiRectangle region){
         super(region);
-        NinePatch npBack = new NinePatch(style.getTextureBackground(), 14, 16, 14, 16);
-        mImgBackground = new GuiDrawable(npBack);
-        NinePatch npPressed = new NinePatch(style.getTexturePressed(), 14, 16, 14, 16);
-        mImgPressed = new GuiDrawable(npPressed);
         mText = text;
-        mStyle = style;
+        mRegion = region;
+    }
+
+    public GuiButton(XmlReader.Element xmlElement, XmlReader.Element xmlRootElement, int tabSpaces) {
+        // Start by getting the core parameters
+        getBasicParametersFromXml(xmlElement, xmlRootElement);
+
+        // Write a debug message
+        String tag = "GuiButton";
+        for(int i = 0; i < tabSpaces; i++) tag = "  " + tag;
+        Gdx.app.log(tag, "New element from XML: " + mId);
+    }
+
+    // Copy constructor
+    public GuiButton(GuiButton cloneElement, GuiElement parent){
+        super(cloneElement, parent);
+        mText = cloneElement.mText;
     }
 
     @Override
     public void draw(SpriteBatch spriteBatch){
         if(mPressed) {
-            mImgPressed.draw(spriteBatch, mRegion);
-            mStyle.getTextFont().draw(spriteBatch, mText, mRegion.getX()+15.0f, mRegion.getY() + mRegion.getH()*0.5f);
+            // Draw all children
+            if(mChildren != null){
+                for(int i = 0; i < mChildren.size(); i++){
+                    mChildren.get(i).drawIfRightState(spriteBatch, GuiState.PRESSED.mask());
+                }
+            }
         }
         else {
-            mImgBackground.draw(spriteBatch, mRegion);
-            mStyle.getTextFont().draw(spriteBatch, mText, mRegion.getX()+15.0f, mRegion.getY() + mRegion.getH()*0.5f);
+            if(mSelected){
+                for(int i = 0; i < mChildren.size(); i++){
+                    mChildren.get(i).drawIfRightState(spriteBatch, GuiState.SELECTED.mask());
+                }
+            }
+            else {
+                // Draw all children
+                if (mChildren != null) {
+                    for (int i = 0; i < mChildren.size(); i++) {
+                        mChildren.get(i).drawIfRightState(spriteBatch, GuiState.RELEASED.mask());
+                    }
+                }
+            }
         }
     }
 
@@ -53,6 +81,15 @@ public class GuiButton extends GuiElement {
             mPressed = false;
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean touchMove(int x, int y) {
+        if(mRegion.contains(x, y)){
+            mSelected = !mPressed;
+        }
+        else mSelected = false;
         return false;
     }
 }

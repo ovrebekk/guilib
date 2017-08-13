@@ -22,6 +22,7 @@ public class GuiPanel extends GuiElement {
         super(region);
         mStyle = style;
         mImgBackground = new GuiDrawable(new NinePatch(style.getTextureBackground(), 40, 40, 40, 40));
+        mImgBackground.setRegion(region);
         mMovable = false;
     }
 
@@ -30,7 +31,7 @@ public class GuiPanel extends GuiElement {
     @Override
     public void draw(SpriteBatch spriteBatch){
         if(mEnabled) {
-            mImgBackground.draw(spriteBatch, mRegion);
+            mImgBackground.draw(spriteBatch);//, mRegion);
             super.draw(spriteBatch);
         }
     }

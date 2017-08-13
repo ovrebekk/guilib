@@ -3,7 +3,6 @@ package com.mygdx.guilib_prot;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.guilib_prot.guilib.*;
 
@@ -12,11 +11,11 @@ public class GuiLib extends ApplicationAdapter {
 	GuiManager 		guiManager;
 	GuiAssetManager guiAssetManager;
 
-	public GuiLib(String defaultAssetDir, float cmToPixelRatio){
+	public GuiLib(String defaultAssetDir, float mmToPixelRatio){
 		super();
 		GuiAssetManager.defaultAssetDirectory = defaultAssetDir;
 		GuiAssetManager.imageNotFoundImage = defaultAssetDir + "_not_found.png";
-		GuiManager.mCentiMeterToPixelRatio = cmToPixelRatio;
+		GuiManager.mMilliMeterToPixelRatio = mmToPixelRatio;
 	}
 
 	private void configureHardCodedGui(){
@@ -49,8 +48,13 @@ public class GuiLib extends ApplicationAdapter {
 		guiManager = new GuiManager();
 		Gdx.input.setInputProcessor(guiManager);
 		guiAssetManager = new GuiAssetManager();
+        GuiElement.mGuiAssetManager = guiAssetManager;
 		guiAssetManager.getTexture("bajs");
 		configureHardCodedGui();
+
+        Gdx.app.log("GuiLib", "Loading XML");
+        guiManager.loadElementsFromFile(GuiAssetManager.defaultAssetDirectory + "\\layout_xml\\test_layouts.xml", false);
+        //GuiXmlParser.loadElementsFromFile(GuiAssetManager.defaultAssetDirectory + "\\layout_xml\\test_layouts.xml");
 	}
 
 	@Override
@@ -67,4 +71,6 @@ public class GuiLib extends ApplicationAdapter {
 		guiManager.resize(width, height);
 		batch = new SpriteBatch();
     }
+
+
 }

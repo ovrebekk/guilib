@@ -11,6 +11,6 @@ public class DesktopLauncher {
 		config.width = 1600;
 		config.height = 1200;
 		config.resizable = true;
-		new LwjglApplication(new GuiLib(defaultAssetDirectory, 42.0f), config);
+		new LwjglApplication(new GuiLib(defaultAssetDirectory, 4.20f), config);
 	}
 }
