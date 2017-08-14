@@ -3,57 +3,61 @@
 <guilib_root>
 
     <button name="btn_template"
-            x="0,0,0,0"
-            y="0,0,0,0"
             alignToParent="BOTTOM_LEFT"
-            width="0,50,0,0"
-            height="0,20,0,0">
+            width="50mm"
+            height="20mm">
 
-        <drawable name="img_released" state="RELEASED" image="9pbtn1" width="0,0,100,0" height="0,0,0,100">
-            <label text="TestButton" textColor="0,255,0" x="0,0,50,0" y="0,0,0,60" width="0,0,100,0" height="0,0,0,100"
-                   alignToParent="CENTER"/>
+        <drawable name="img_released" state="RELEASED" image="9pbtn1" width="100%pw" height="100%ph">
+            <label text="TestButton" textColor="0,255,0" x="50%pw" y="60%ph" width="100%pw" height="100%ph"
+                   alignToParent="MID_MID"/>
         </drawable>
 
-        <drawable name="img_pressed"  state="PRESSED"  image="9pbtn1p" width="0,0,100,0" height="0,0,0,100">
-            <label text="PIKKEMANN" textColor="255,255,255" x="0,0,50,0" y="0,0,0,60" width="0,0,100,0" height="0,0,0,100"
-                   alignToParent="CENTER"/>
+        <drawable name="img_pressed"  state="PRESSED"  image="9pbtn1p" width="100%pw" height="100%ph">
+            <label text="PIKKEMANN" textColor="255,255,255" x="50%pw" y="60%ph" width="100%pw" height="100%ph"
+                   alignToParent="MID_MID"/>
         </drawable>
 
-        <drawable name="img_selected" state="SELECTED" image="9pbtn1" width="0,0,100,0" height="0,0,0,100">
-            <label text="TestButton" textColor="255,255,255" x="0,0,50,0" y="0,0,0,60" width="0,0,100,0" height="0,0,0,100"
-                   alignToParent="CENTER"/>
+        <drawable name="img_selected" state="SELECTED" image="9pbtn1" width="100%pw" height="100%ph">
+            <label text="TestButton" textColor="255,255,255" x="50%pw" y="60%ph" width="100%pw" height="100%ph"
+                   alignToParent="MID_MID"/>
         </drawable>
 
     </button>
 
     <guielement name="mainwindow_template">
-        <guielement name="top_bar" width="0,0,0,100" height="0,20,0,0" alignToParent="TOP_LEFT">
+        <guielement name="top_bar" width="100%pw" height="20 mm" alignToParent="TOP_LEFT">
 
         </guielement>
 
         <guielement inherit="standard_button_base" name="btn_ok" alignToParent="BOTTOM_LEFT"></guielement>
-        <guielement inherit="standard_button_base" name="btn_cancel" x="0,0,50,0" alignToParent="BOTTOM_LEFT"></guielement>
+        <guielement inherit="standard_button_base" name="btn_cancel" x="50 %PW" alignToParent="BOTTOM_LEFT"></guielement>
     </guielement>
 
-    <drawable name="please_show" image="panel01" width="500,0,0,0" height="400,0,0,0" alignToParent="BOTTOM_LEFT">
-        <drawable tag="side_bar" image="9pbtn1" x = "0,0,0,0" y="0,0,0,100" width = "0,10,0,0" height="0,0,0,100" alignToParent="TOP_LEFT"/>
-        <drawable tag="right bar" ninepatch="9pbtn1" ninepatch_coordinates="10,10,10,10" x = "0,0,100,0" y="0,0,0,100"
-                  width = "0,10,0,0" height="0,0,0,100" alignToParent="TOP_RIGHT"/>
-        <drawable tag="top bar"  image="9pbtn1" x = "0,0,50,0" y="0,-5,0,100" width = "0,-20,100,0" height="0,10,0,0" alignToParent="CENTER"/>
-        <label text="TestText - This must be really long to test shit out!!!" x = "0,0,50,0" y="0,0,0,50"
-               textColor="128,128,128" alignToParent="CENTER"/>
-        <label text="TestTekstTo" textColor="255,1,1" x = "0,0,50,0" y="0,-20,0,50" alignToParent="CENTER"/>
+    <drawable name="please_show" image="panel01" x="50%PW" y="100%PH, -20mm" width="500" height="400" alignToParent="TOP_MID">
+        <drawable tag="side_bar" image="9pbtn1" x = "0" y="100 %PH" width = "10 mm" height="100 %PH" alignToParent="TOP_LEFT"/>
+        <drawable tag="right bar" ninepatch="9pbtn1" ninepatch_coordinates="10,10,10,10" x = "100%PW" y="100%PH"
+                  width = "10 mm" height="100%PH" alignToParent="TOP_RIGHT"/>
+        <drawable tag="top bar"  image="9pbtn1" x = "50 %PW" y="-5 mm,100%PH" width = "-20 mm, 100%PW" height="10 mm" alignToParent="MID_MID"/>
+        <label text="TestText - This must be really long to test shit out!!!" x = "50 %PW" y="50 %PH"
+               textColor="128,128,128" alignToParent="MID_MID"/>
+        <label text="TestTekstTo" textColor="255,1,1" x = "50 %PW" y="-20 mm, 50%PW" alignToParent="MID_MID"/>
 
         <button name="btn3"
                 inherit="btn_template"
-                x="0,50,0,0"
-                y="0,0,0,0">
+                x="50 mm"
+                y="50mm">
         </button>
 
         <button name="btn4"
                 inherit="btn_template"
-                x="0,50,0,0"
-                y="0,50,0,0">
+                x="50mm"
+                y="20mm">
+        </button>
+
+        <button name="btn4"
+                inherit="btn_template"
+                x="50mm"
+                y="0mm">
         </button>
 
     </drawable>

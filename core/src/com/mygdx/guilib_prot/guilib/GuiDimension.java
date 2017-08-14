@@ -47,11 +47,28 @@ public class GuiDimension extends GuiParameter {
         super(dimension);
         if(dimension != null) {
             String[] components = dimension.split(",");
-            if (components.length >= 4) {
-                mAmountPixel = Float.parseFloat(components[0]);
-                mAmountMilliMeter = Float.parseFloat(components[1]);
-                mParentWidthFactor = Float.parseFloat(components[2]);
-                mParentHeightFactor = Float.parseFloat(components[3]);
+            if (components.length > 0) {
+                for(String component : components){
+                    if(component.toLowerCase().endsWith("px")){
+                        mAmountPixel += Float.parseFloat(component.substring(0, component.length()-2));
+                    }
+                    else if(component.toLowerCase().endsWith("mm")){
+                        mAmountMilliMeter += Float.parseFloat(component.substring(0, component.length()-2));
+                    }
+                    else if(component.toLowerCase().endsWith("cm")){
+                        mAmountMilliMeter += Float.parseFloat(component.substring(0, component.length()-2)) / 10.0f;
+                    }
+                    else if(component.toLowerCase().endsWith("%pw")){
+                        mParentWidthFactor += Float.parseFloat(component.substring(0, component.length()-3));
+                    }
+                    else if(component.toLowerCase().endsWith("%ph")){
+                        mParentHeightFactor += Float.parseFloat(component.substring(0, component.length()-3));
+                    }
+                    // If there is no match, assume there is no prefix and default to pixel coordinates
+                    else {
+                        mAmountPixel += Float.parseFloat(component);
+                    }
+                }
             }
         }
         else {
@@ -66,7 +83,6 @@ public class GuiDimension extends GuiParameter {
     // Copy constructor
     public GuiDimension(GuiDimension clone){
         super(clone.mValueString);
-        mValueString = clone.mValueString;
         mAmountPixel = clone.mAmountPixel;
         mAmountMilliMeter = clone.mAmountMilliMeter;
         mParentWidthFactor = clone.mParentWidthFactor;
