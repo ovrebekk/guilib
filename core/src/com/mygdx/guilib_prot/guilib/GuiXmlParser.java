@@ -81,20 +81,21 @@ public class GuiXmlParser {
 
     public static Color stringToColor(String colorString) {
         Color newColor;
-        if(colorString.split(",").length == 3){
-            int r = Integer.valueOf(colorString.split(",")[0]) & 0xFF;
-            int g = Integer.valueOf(colorString.split(",")[1]) & 0xFF;
-            int b = Integer.valueOf(colorString.split(",")[2]) & 0xFF;
-            newColor = new Color(r << 24 | g << 16 | b << 8 | 0xFF);
-            return newColor;
-        }
-        else if(colorString.split(",").length == 4){
-            int r = Integer.valueOf(colorString.split(",")[0]) & 0xFF;
-            int g = Integer.valueOf(colorString.split(",")[1]) & 0xFF;
-            int b = Integer.valueOf(colorString.split(",")[2]) & 0xFF;
-            int a = Integer.valueOf(colorString.split(",")[3]) & 0xFF;
-            newColor = new Color(r << 24 | g << 16 | b << 8 | a);
-            return newColor;
+        if(colorString != null) {
+            if (colorString.split(",").length == 3) {
+                int r = Integer.valueOf(colorString.split(",")[0]) & 0xFF;
+                int g = Integer.valueOf(colorString.split(",")[1]) & 0xFF;
+                int b = Integer.valueOf(colorString.split(",")[2]) & 0xFF;
+                newColor = new Color(r << 24 | g << 16 | b << 8 | 0xFF);
+                return newColor;
+            } else if (colorString.split(",").length == 4) {
+                int r = Integer.valueOf(colorString.split(",")[0]) & 0xFF;
+                int g = Integer.valueOf(colorString.split(",")[1]) & 0xFF;
+                int b = Integer.valueOf(colorString.split(",")[2]) & 0xFF;
+                int a = Integer.valueOf(colorString.split(",")[3]) & 0xFF;
+                newColor = new Color(r << 24 | g << 16 | b << 8 | a);
+                return newColor;
+            }
         }
         return null;
     }

@@ -33,10 +33,52 @@ public class GuiManager implements InputProcessor {
         mBaseGuiElement = new GuiElement(new GuiRectangle(0, 0, 100, 100));
     }
 
+    private GuiElement guiElementInListById(String id, List<GuiElement> guiElementList){
+        for(GuiElement element : guiElementList){
+            if(element.getId().equals(id)){
+                return element;
+            }
+        }
+        return null;
+    }
+
+    private boolean recursiveGuiElementInheritanceSearch(GuiElement element, List<GuiElement> topElementList){
+        boolean inheritanceExecuted = false;
+        // Check the top guiElement for inheritance
+        if(element.getInheritFrom() != null){
+            GuiElement inheritanceTarget = guiElementInListById(element.getInheritFrom(), topElementList);
+            if(inheritanceTarget != null){
+                // Inherit the properties of the top element
+                element.inheritOpenParameters(inheritanceTarget);
+
+                // Inherit all the children of the top element
+                for(GuiElement inheritTargetChild : inheritanceTarget.getChildren()){
+                    element.addChild(cloneGuiElement(inheritTargetChild, element));
+                }
+
+                inheritanceExecuted = true;
+            }
+        }
+
+        // Check the children for inheritance recursively
+        if(element.getChildren() != null) {
+            for (GuiElement elementChild : element.getChildren()) {
+                inheritanceExecuted |=  recursiveGuiElementInheritanceSearch(elementChild, topElementList);
+            }
+        }
+
+        // Return true if one or more elements went through the inheritance phase
+        return inheritanceExecuted;
+    }
+
     public void loadElementsFromFile(String fileName, boolean clearOldElements) {
+        // Load all the GUI elements from the XML document
         List<GuiElement> elementList = GuiXmlParser.loadElementsFromFile(fileName);
 
         // Do inheritance pass to fill out inherited parameters
+        for(GuiElement guiElement : elementList){
+            recursiveGuiElementInheritanceSearch(guiElement, elementList);
+        }
 
         if(clearOldElements) mLoadedGuiElements.clear();
 
@@ -88,6 +130,22 @@ public class GuiManager implements InputProcessor {
         }
 
         return newElement;
+    }
+
+    public static PivotPoint pivotPointFromString(String xmlString){
+        // Bottom left is the default value if the string is incorrect/missing
+        PivotPoint newPivotPoint = GuiManager.PivotPoint.BOTTOM_LEFT;
+
+        // If the string is not null, try to decode it
+        if(xmlString != null) {
+            try {
+                newPivotPoint = GuiManager.PivotPoint.valueOf(xmlString);
+            } catch (IllegalArgumentException e) {
+                newPivotPoint = GuiManager.PivotPoint.BOTTOM_LEFT;
+                Gdx.app.error("GuiElement", "Invalid alignToParent in XML: " + xmlString + ", defaulting to BOTTOM_LEFT");
+            }
+        }
+        return newPivotPoint;
     }
 
     public void addTopLevelElement(GuiElement element){

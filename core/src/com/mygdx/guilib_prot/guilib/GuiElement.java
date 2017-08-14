@@ -76,13 +76,14 @@ public class GuiElement {
         return true;
     }
 
-    protected String getXmlAttributeIfPresent(XmlReader.Element xmlElement, String attributeName, String defaultValue) {
+    // returns the value of the attribute if the attribute exists, and null otherwise
+    protected String getXmlAttributeIfPresent(XmlReader.Element xmlElement, String attributeName) {
         String returnValue;
         try {
             returnValue = xmlElement.getAttribute(attributeName);
         }
         catch(GdxRuntimeException e) {
-            returnValue = defaultValue;
+            returnValue = null;
         }
         return returnValue;
     }
@@ -100,25 +101,13 @@ public class GuiElement {
     public String getId(){ return mId; }
 
     protected void getBasicParametersFromXml(XmlReader.Element xmlElement, XmlReader.Element xmlRootElement) {
-        // Inheritance parameters
-        XmlReader.Element inheritXmlElement = null;
-        mInheritFrom = getXmlAttributeIfPresent(xmlElement, "inherit", "");
-        if(mInheritFrom != ""){
-            for(int i = 0; i < xmlRootElement.getChildCount(); i++){
-                if(getXmlAttributeIfPresent(xmlRootElement.getChild(i), "name", "").equals(mInheritFrom)){
-                    inheritXmlElement = xmlRootElement.getChild(i);
-                    break;
-                }
-            }
-        }
-
         // Find the name. Set the name blank if not present
-        mId = getXmlAttributeIfPresent(xmlElement, "name", "NO_NAME");
+        if((mId = getXmlAttributeIfPresent(xmlElement, "name")) == null) mId = "NO_NAME";
 
         // Set the state flags
         mStateFlags = 0;
-        String stateLabels = getXmlAttributeIfPresent(xmlElement, "state", "");
-        if(stateLabels != "") {
+        String stateLabels = getXmlAttributeIfPresent(xmlElement, "state");
+        if(stateLabels != null) {
             for (String state : stateLabels.split(",")) {
                 for (int listIndex = 0; listIndex < (GuiState.values().length - 1); listIndex++) {
                     String test = GuiState.values()[listIndex].toString();
@@ -131,25 +120,15 @@ public class GuiElement {
         }
         else mStateFlags = 0xFFFFFFF;
 
-        // Get pos and size parameters
-        String x, y, w, h, alignToParent;
-        x = getXmlAttributeIfPresent(xmlElement, "x", "");
-        if(x == "" && inheritXmlElement != null){
-            x = getXmlAttributeIfPresent(inheritXmlElement, "x", "");
-        }
-        y = getXmlAttributeIfPresent(xmlElement, "y", "");
-        w = getXmlAttributeIfPresent(xmlElement, "width", "");
-        h = getXmlAttributeIfPresent(xmlElement, "height", "");
-        alignToParent = getXmlAttributeIfPresent(xmlElement, "alignToParent", "BOTTOM_LEFT");
-        GuiManager.PivotPoint pivotPoint;
-        try {
-            pivotPoint = GuiManager.PivotPoint.valueOf(alignToParent);
-        }
-        catch(IllegalArgumentException e) {
-            pivotPoint = GuiManager.PivotPoint.TOP_LEFT;
-            Gdx.app.error("GuiElement", "Invalid alignToParent in XML: " + alignToParent + ", defaulting to TOP_LEFT");
-        }
-        mRegion = new GuiRectangle(x, y, w, h, pivotPoint);
+        // Update the region
+        mRegion = new GuiRectangle(getXmlAttributeIfPresent(xmlElement, "x"),
+                                   getXmlAttributeIfPresent(xmlElement, "y"),
+                                   getXmlAttributeIfPresent(xmlElement, "width"),
+                                   getXmlAttributeIfPresent(xmlElement, "height"),
+                                   getXmlAttributeIfPresent(xmlElement, "alignToParent"));
+
+        // Inheritance parameters
+        mInheritFrom = getXmlAttributeIfPresent(xmlElement, "inherit");
     }
 
     public void setParent(GuiElement parent){
@@ -180,6 +159,16 @@ public class GuiElement {
 
     public GuiRectangle getRegion(){
         return mRegion;
+    }
+
+    public String getInheritFrom(){ return mInheritFrom; }
+
+    public void inheritOpenParameters(GuiElement inheritTarget){
+        mRegion.inheritFrom(inheritTarget.mRegion);
+
+        // After resolving inheritance we set the inherit parameter to null
+        // In this case we can run multiple inheritance passes, and only resolve each element once
+        mInheritFrom = null;
     }
 
     public void draw(SpriteBatch spriteBatch){

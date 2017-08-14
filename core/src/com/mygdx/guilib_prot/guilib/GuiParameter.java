@@ -1,28 +1,24 @@
 package com.mygdx.guilib_prot.guilib;
 
-public class GuiParameter {
-    protected String mValue;
-    protected boolean mValueSet;
-    protected boolean mReferenceParameter;
-    protected String mReferenceName;
 
-    public GuiParameter() {
-        mValue = "";
-        mValueSet = false;
-        mReferenceParameter = false;
+public class GuiParameter {
+    protected String mValueString;
+
+    public GuiParameter(){
+        mValueString = null;
     }
 
     public GuiParameter(String value) {
-        mValue = value;
-        mValueSet = true;
-        mReferenceParameter = false;
+        mValueString = value;
     }
 
+    public void setValueString(String value){ mValueString = value; }
+
     public String valueString() {
-        return mValue;
+        return mValueString;
     }
 
     public boolean isValueSet() {
-        return mValueSet;
+        return mValueString != null;
     }
 }

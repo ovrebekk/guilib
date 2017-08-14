@@ -3,7 +3,7 @@ package com.mygdx.guilib_prot.guilib;
 /**
  * Created by ovreb on 31.05.2016.
  */
-public class GuiDimension {
+public class GuiDimension extends GuiParameter {
     private float   mAmountPixel;
     private float   mAmountMilliMeter;
     private float   mParentWidthFactor;
@@ -11,7 +11,15 @@ public class GuiDimension {
 
     private float   mCachedValue;
 
-    public GuiDimension(float amPixel){
+    public GuiDimension(){
+        mAmountPixel = 0.0f;
+        mAmountMilliMeter = 0.0f;
+        mParentWidthFactor = 0.0f;
+        mParentHeightFactor = 0.0f;
+        invalidate(null);
+    }
+
+    public GuiDimension(float amPixel) {
         mAmountPixel = amPixel;
         mAmountMilliMeter = 0.0f;
         mParentWidthFactor = 0.0f;
@@ -36,17 +44,29 @@ public class GuiDimension {
     }
 
     public GuiDimension(String dimension){
-        String[] components = dimension.split(",");
-        if(components.length >= 4){
-            mAmountPixel = Float.parseFloat(components[0]);
-            mAmountMilliMeter = Float.parseFloat(components[1]);
-            mParentWidthFactor = Float.parseFloat(components[2]);
-            mParentHeightFactor = Float.parseFloat(components[3]);
+        super(dimension);
+        if(dimension != null) {
+            String[] components = dimension.split(",");
+            if (components.length >= 4) {
+                mAmountPixel = Float.parseFloat(components[0]);
+                mAmountMilliMeter = Float.parseFloat(components[1]);
+                mParentWidthFactor = Float.parseFloat(components[2]);
+                mParentHeightFactor = Float.parseFloat(components[3]);
+            }
         }
+        else {
+            mAmountPixel = 0.0f;
+            mAmountMilliMeter = 0.0f;
+            mParentWidthFactor = 0.0f;
+            mParentHeightFactor = 0.0f;
+        }
+        invalidate(null);
     }
 
     // Copy constructor
     public GuiDimension(GuiDimension clone){
+        super(clone.mValueString);
+        mValueString = clone.mValueString;
         mAmountPixel = clone.mAmountPixel;
         mAmountMilliMeter = clone.mAmountMilliMeter;
         mParentWidthFactor = clone.mParentWidthFactor;

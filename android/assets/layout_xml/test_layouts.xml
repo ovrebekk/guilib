@@ -15,7 +15,7 @@
         </drawable>
 
         <drawable name="img_pressed"  state="PRESSED"  image="9pbtn1p" width="0,0,100,0" height="0,0,0,100">
-            <label text="TestButton" textColor="255,255,255" x="0,0,50,0" y="0,0,0,60" width="0,0,100,0" height="0,0,0,100"
+            <label text="PIKKEMANN" textColor="255,255,255" x="0,0,50,0" y="0,0,0,60" width="0,0,100,0" height="0,0,0,100"
                    alignToParent="CENTER"/>
         </drawable>
 
@@ -35,25 +35,6 @@
         <guielement inherit="standard_button_base" name="btn_cancel" x="0,0,50,0" alignToParent="BOTTOM_LEFT"></guielement>
     </guielement>
 
-    <button name="btn_template"
-            width="0,50,0,0"
-            height="0,20,0,0">
-
-        <drawable name="img_released" state="RELEASED" image="9pbtn1" width="0,0,100,0" height="0,0,0,100">
-            <label text="@REF btn_text" color="255,255,255"/>
-        </drawable>
-
-        <drawable name="img_pressed"  state="PRESSED"  image="9pbtn1" width="0,0,100,0" height="0,0,0,100">
-            <label text="@REF btn_text" color="255,255,255"/>
-        </drawable>
-
-        <drawable name="img_selected" state="SELECTED" ninepatch="9pbtn1" ninepatch_coordinates="14,14,16,16"
-                  width="0,0,100,0" height="0,0,0,100">
-            <label text="@REF btn_text" color="255,255,255"/>
-        </drawable>
-
-    </button>
-
     <drawable name="please_show" image="panel01" width="500,0,0,0" height="400,0,0,0" alignToParent="BOTTOM_LEFT">
         <drawable tag="side_bar" image="9pbtn1" x = "0,0,0,0" y="0,0,0,100" width = "0,10,0,0" height="0,0,0,100" alignToParent="TOP_LEFT"/>
         <drawable tag="right bar" ninepatch="9pbtn1" ninepatch_coordinates="10,10,10,10" x = "0,0,100,0" y="0,0,0,100"
@@ -63,35 +44,16 @@
                textColor="128,128,128" alignToParent="CENTER"/>
         <label text="TestTekstTo" textColor="255,1,1" x = "0,0,50,0" y="0,-20,0,50" alignToParent="CENTER"/>
 
-        <button name="btn2"
-                x="0,0,0,0"
-                y="0,0,0,0"
-                alignToParent="BOTTOM_LEFT"
-                width="0,50,0,0"
-                height="0,20,0,0">
-
-            <drawable name="img_released" state="RELEASED" image="9pbtn1" width="0,0,100,0" height="0,0,0,100">
-                <label text="TestButton" textColor="0,255,0" x="0,0,50,0" y="0,0,0,60" width="0,0,100,0" height="0,0,0,100"
-                       alignToParent="CENTER"/>
-            </drawable>
-
-            <drawable name="img_pressed"  state="PRESSED"  image="9pbtn1p" width="0,0,100,0" height="0,0,0,100">
-                <label text="TestButton" textColor="255,255,255" x="0,0,50,0" y="0,0,0,60" width="0,0,100,0" height="0,0,0,100"
-                       alignToParent="CENTER"/>
-            </drawable>
-
-            <drawable name="img_selected" state="SELECTED" image="9pbtn1" width="0,0,100,0" height="0,0,0,100">
-                <label text="TestButton" textColor="255,255,255" x="0,0,50,0" y="0,0,0,60" width="0,0,100,0" height="0,0,0,100"
-                       alignToParent="CENTER"/>
-            </drawable>
-
-        </button>
-
         <button name="btn3"
                 inherit="btn_template"
                 x="0,50,0,0"
                 y="0,0,0,0">
+        </button>
 
+        <button name="btn4"
+                inherit="btn_template"
+                x="0,50,0,0"
+                y="0,50,0,0">
         </button>
 
     </drawable>

@@ -19,10 +19,10 @@ public class GuiLabel extends GuiElement {
         getBasicParametersFromXml(xmlElement, xmlRootElement);
 
         // Get label parameters
-        mText = getXmlAttributeIfPresent(xmlElement, "text", "");
-        mTextColor = GuiXmlParser.stringToColor(getXmlAttributeIfPresent(xmlElement, "textColor", "255,255,255"));
+        mText = getXmlAttributeIfPresent(xmlElement, "text");
+        mTextColor = GuiXmlParser.stringToColor(getXmlAttributeIfPresent(xmlElement, "textColor"));
         mFont = new BitmapFont();
-        mFont.setColor(mTextColor);
+        mFont.setColor(mTextColor != null ? mTextColor : Color.WHITE);
 
         // Write a debug message
         String tag = "GuiLabel";

@@ -33,14 +33,14 @@ public class GuiDrawable extends GuiElement {
         getBasicParametersFromXml(xmlElement, xmlRootElement);
 
         // Get image parameters
-        String imageName = getXmlAttributeIfPresent(xmlElement, "image", "");
-        if(imageName != "") {
+        String imageName = getXmlAttributeIfPresent(xmlElement, "image");
+        if(imageName != null) {
             mTexture = GuiElement.mGuiAssetManager.getTexture(imageName);
         }
         else {
-            String ninepatchName = getXmlAttributeIfPresent(xmlElement, "ninepatch", "PIKK");
-            String ninepatchCoordinates = getXmlAttributeIfPresent(xmlElement, "ninepatch_coordinates", "");
-            if (ninepatchCoordinates.split(",").length == 4) {
+            String ninepatchName = getXmlAttributeIfPresent(xmlElement, "ninepatch");
+            String ninepatchCoordinates = getXmlAttributeIfPresent(xmlElement, "ninepatch_coordinates");
+            if (ninepatchCoordinates != null && ninepatchCoordinates.split(",").length == 4) {
                 int left = Integer.parseInt(ninepatchCoordinates.split(",")[0]);
                 int right = Integer.parseInt(ninepatchCoordinates.split(",")[1]);
                 int top = Integer.parseInt(ninepatchCoordinates.split(",")[2]);

@@ -54,6 +54,16 @@ public class GuiRectangle {
         mPivot = pivot;
     }
 
+    // Constructor intended to parse strings from XML
+    // Checks if the strings are null, and assigns default values if so
+    public GuiRectangle(String posX, String posY, String width, String height, String pivot){
+        mPosX = new GuiDimension(posX);
+        mPosY = new GuiDimension(posY);
+        mWidth = new GuiDimension(width);
+        mHeight = new GuiDimension(height);
+        mPivot = GuiManager.pivotPointFromString(pivot);
+    }
+
     // Copy constructor
     public GuiRectangle(GuiRectangle guiRectangle){
         mPosX = new GuiDimension(guiRectangle.mPosX);
@@ -102,6 +112,13 @@ public class GuiRectangle {
     public void incrementX(float amount) { mPosX.incrementPixel(amount); }
 
     public void incrementY(float amount) { mPosY.incrementPixel(amount); }
+
+    public void inheritFrom(GuiRectangle inheritTarget){
+        if(!mPosX.isValueSet()) mPosX = new GuiDimension(inheritTarget.mPosX);
+        if(!mPosY.isValueSet()) mPosY = new GuiDimension(inheritTarget.mPosY);
+        if(!mWidth.isValueSet()) mWidth = new GuiDimension(inheritTarget.mWidth);
+        if(!mHeight.isValueSet()) mHeight = new GuiDimension(inheritTarget.mHeight);
+    }
 
     public boolean contains(int x, int y){
         return (float)x >= mCachedX && (float)x < (mCachedX + mCachedW) && (float)y >= mCachedY && (float)y < (mCachedY + mCachedH);
