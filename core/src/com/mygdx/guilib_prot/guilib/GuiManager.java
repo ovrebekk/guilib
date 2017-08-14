@@ -53,7 +53,9 @@ public class GuiManager implements InputProcessor {
 
                 // Inherit all the children of the top element
                 for(GuiElement inheritTargetChild : inheritanceTarget.getChildren()){
-                    element.addChild(cloneGuiElement(inheritTargetChild, element));
+                    GuiElement newElement = cloneGuiElement(inheritTargetChild, element);
+                    newElement.pushReferences(element.getReferenceMap());
+                    element.addChild(newElement);
                 }
 
                 inheritanceExecuted = true;
@@ -188,7 +190,7 @@ public class GuiManager implements InputProcessor {
         if(c == 'e'){
 
             Gdx.app.log("GuiManager","Spawning GUI....");
-            spawnElement("please_show", spawnX, spawnY);
+            spawnElement("test_window", spawnX, spawnY);
             spawnX += 50;
             spawnY += 50;
         }

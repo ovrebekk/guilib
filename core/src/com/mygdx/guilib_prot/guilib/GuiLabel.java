@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.XmlReader;
 
+import java.util.List;
+import java.util.Map;
+
 public class GuiLabel extends GuiElement {
 
     private String      mText;
@@ -20,6 +23,7 @@ public class GuiLabel extends GuiElement {
 
         // Get label parameters
         mText = getXmlAttributeIfPresent(xmlElement, "text");
+        GuiXmlParser.checkForReferenceAndRegister(mText);
         mTextColor = GuiXmlParser.stringToColor(getXmlAttributeIfPresent(xmlElement, "textColor"));
         mFont = new BitmapFont();
         mFont.setColor(mTextColor != null ? mTextColor : Color.WHITE);
@@ -36,6 +40,41 @@ public class GuiLabel extends GuiElement {
         mText = cloneElement.mText;
         mTextColor = cloneElement.mTextColor;
         mFont = cloneElement.mFont;
+    }
+
+    public static void checkXmlElementForReferences(XmlReader.Element xmlElement, List<String> referenceList){
+        // Check if the text parameter contains a reference
+        String textReference = GuiXmlParser.isReference(getXmlAttributeIfPresent(xmlElement, "text"));
+        if(textReference != null && !referenceList.contains(textReference)){
+            referenceList.add(textReference);
+        }
+    }
+
+    @Override
+    public void publishReferenceParameters(Map<String, String> referenceList) {
+        // The text parameter of a label is a candidate for a reference
+        String reference = GuiXmlParser.isReference(mText);
+        if(reference != null){
+            if(!referenceList.containsKey(reference)){
+                // Putting the key without any value means we don't have the data available, and need to have it provided
+                referenceList.put(reference, null);
+            }
+        }
+
+        // Call the super function, which forwards the call to the children
+        super.publishReferenceParameters(referenceList);
+    }
+
+    @Override
+    public void pushReferences(Map<String, String> referenceMap) {
+        // Check the text parameter for references
+        String textReference = GuiXmlParser.isReference(mText);
+        if(textReference != null && referenceMap.containsKey(textReference)){
+            mText = referenceMap.get(textReference);
+        }
+
+        // Run the base function (includes children)
+        super.pushReferences(referenceMap);
     }
 
     @Override

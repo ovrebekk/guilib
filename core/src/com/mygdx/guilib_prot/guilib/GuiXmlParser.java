@@ -14,6 +14,8 @@ import java.util.List;
 
 public class GuiXmlParser {
 
+    public static List<String> XmlAttributeReferenceList;
+
     public static List<GuiElement> loadElementsFromFile(String fileName) {
         List<GuiElement> elementsFromFile = null;
         try {
@@ -24,6 +26,14 @@ public class GuiXmlParser {
                 if(xmlRootElement.getName().equals("guilib_root")){
                     if(xmlRootElement.getChildCount() > 0) {
                         elementsFromFile = new ArrayList<GuiElement>();
+
+                        // Do a pre-pass of all the XML elements to look for references
+                        XmlAttributeReferenceList = new ArrayList<String>();
+                        for (int i = 0; i < xmlRootElement.getChildCount(); i++) {
+                            findReferences(xmlRootElement.getChild(i), XmlAttributeReferenceList);
+                        }
+
+                        // Go through all the XmlElements and create new GuiElements
                         for (int i = 0; i < xmlRootElement.getChildCount(); i++) {
                             elementsFromFile.add(decodeGuiElements(xmlRootElement.getChild(i), xmlRootElement, 0));
                         }
@@ -77,6 +87,37 @@ public class GuiXmlParser {
             Gdx.app.error("GuiElement", "Invalid element in XML: " + xmlElement.getName());
         }
         return newGuiElement;
+    }
+
+    private static void findReferences(XmlReader.Element xmlElement, List<String> referenceList){
+        if(xmlElement.getName().equals("label")){
+            GuiLabel.checkXmlElementForReferences(xmlElement, referenceList);
+        }
+
+        // If there are children, apply the same process recursively
+        for (int i = 0; i < xmlElement.getChildCount(); i++) {
+            findReferences(xmlElement.getChild(i), referenceList);
+        }
+    }
+
+    public static String isReference(String parameter){
+        if(parameter != null && parameter.length() >= 1){
+            if(parameter.startsWith("@")){
+                return parameter.substring(1, parameter.length());
+            }
+        }
+        return null;
+    }
+
+    public static boolean checkForReferenceAndRegister(String parameter){
+        String reference = isReference(parameter);
+        if(reference != null){
+            if (!XmlAttributeReferenceList.contains(reference)) {
+                XmlAttributeReferenceList.add(reference);
+            }
+            return true;
+        }
+        return false;
     }
 
     public static Color stringToColor(String colorString) {
