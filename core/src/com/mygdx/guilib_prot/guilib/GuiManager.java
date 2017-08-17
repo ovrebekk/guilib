@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ public class GuiManager implements InputProcessor {
     public static float mMilliMeterToPixelRatio = 42.0f / 10.0f;
 
     public static int screenWidth = 0, screenHeight = 0; // Used to invert Y coordinates
+
+    public static ShapeRenderer mShapeRenderer;
 
     public enum PivotPoint {
         TOP_LEFT, MID_LEFT, BOTTOM_LEFT, TOP_MID, MID_MID, BOTTOM_MID, TOP_RIGHT, MID_RIGHT, BOTTOM_RIGHT, CENTER
@@ -31,6 +34,7 @@ public class GuiManager implements InputProcessor {
     public GuiManager(){
 
         mBaseGuiElement = new GuiElement(new GuiRectangle(0, 0, 100, 100));
+        mShapeRenderer = new ShapeRenderer();
     }
 
     private GuiElement guiElementInListById(String id, List<GuiElement> guiElementList){
@@ -78,7 +82,7 @@ public class GuiManager implements InputProcessor {
         List<GuiElement> elementList = GuiXmlParser.loadElementsFromFile(fileName);
 
         // Do inheritance pass to fill out inherited parameters
-        for(GuiElement guiElement : elementList){
+        for (GuiElement guiElement : elementList) {
             recursiveGuiElementInheritanceSearch(guiElement, elementList);
         }
 
@@ -99,7 +103,6 @@ public class GuiManager implements InputProcessor {
         }
         if(newElement != null) {
             //newElement.invalidate(null);
-
             mActiveSceneElement.addChild(newElement);
             mActiveSceneElement.invalidate(null);
         }
@@ -182,10 +185,11 @@ public class GuiManager implements InputProcessor {
 
     static int spawnX = 0;
     static int spawnY = 0;
+    static boolean debugOn = false;
+
 
     @Override
     public boolean keyTyped(char c) {
-
         boolean keyHandled = true;
         if(c == 'e'){
 
@@ -194,11 +198,19 @@ public class GuiManager implements InputProcessor {
             spawnX += 50;
             spawnY += 50;
         }
+        else if(c == 'y'){
+            Gdx.app.log("GuiManager","Spawning GUI....");
+            spawnElement("window1", 200, 200);
+        }
         // Reset layout and reload XML
         else if(c == 'r'){
             mActiveSceneElement = new GuiElement(mActiveSceneElement.getRegion());
             loadElementsFromFile(GuiAssetManager.defaultAssetDirectory + "\\layout_xml\\test_layouts.xml", true);
             spawnX = spawnY = 0;
+        }
+        else if(c == 'd'){
+            debugOn = !debugOn;
+            mActiveSceneElement.pushDebugCommand(debugOn ? "debug on" : "debug off");
         }
         else keyHandled = false;
         return keyHandled;

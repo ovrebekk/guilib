@@ -69,7 +69,7 @@ public class GuiLabel extends GuiElement {
     public void pushReferences(Map<String, String> referenceMap) {
         // Check the text parameter for references
         String textReference = GuiXmlParser.isReference(mText);
-        if(textReference != null && referenceMap.containsKey(textReference)){
+        if(textReference != null && referenceMap != null && referenceMap.containsKey(textReference)){
             mText = referenceMap.get(textReference);
         }
 
@@ -89,7 +89,8 @@ public class GuiLabel extends GuiElement {
     @Override
     public void draw(SpriteBatch spriteBatch) {
         if(mFont != null && mText != null){
-            mFont.draw(spriteBatch, mText, mRegion.getX(), mRegion.getY());
+            mFont.draw(spriteBatch, mText, mRegion.getX(), mRegion.getY() + mGlyphLayout.height);
         }
+        super.draw(spriteBatch);
     }
 }

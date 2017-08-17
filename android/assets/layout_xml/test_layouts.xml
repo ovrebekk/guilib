@@ -9,32 +9,47 @@
 
         <drawable state="RELEASED" ninepatch="9pbtn1" ninepatch_coordinates="10,10,10,10"
                   width="100%pw" height="100%ph">
-            <label text="@button_text" textColor="155,255,155" x="50%pw" y="70%ph" width="100%pw" height="100%ph"
+            <label text="@button_text" textColor="155,255,155" x="50%pw" y="50%ph" width="100%pw" height="100%ph"
                    alignToParent="MID_MID"/>
         </drawable>
 
         <drawable state="PRESSED"  ninepatch="9pbtn1p" ninepatch_coordinates="10,10,10,10"
                   width="100%pw" height="100%ph">
-            <label text="@button_text" textColor="255,255,255" x="0.4mm,50%pw" y="-0.4mm,70%ph" width="100%pw" height="100%ph"
+            <label text="@button_text" textColor="255,255,255" x="0.4mm,50%pw" y="-0.4mm,50%ph" width="100%pw" height="100%ph"
                    alignToParent="MID_MID"/>
         </drawable>
 
         <drawable state="SELECTED" ninepatch="9pbtn1" ninepatch_coordinates="10,10,10,10"
                   width="100%pw" height="100%ph">
-            <label text="@button_text" textColor="255,255,255" x="50%pw" y="70%ph" width="100%pw" height="100%ph"
+            <label text="@button_text" textColor="255,255,255" x="50%pw" y="50%ph" width="100%pw" height="100%ph"
                    alignToParent="MID_MID"/>
         </drawable>
 
     </button>
 
-    <guielement name="mainwindow_template">
-        <guielement name="top_bar" width="100%pw" height="20 mm" alignToParent="TOP_LEFT">
-
+    <!-- Top bar -->
+    <drawable name="mainwindow_topbar_t" y="100%ph" width="100%pw" height="6 mm" alignToParent="TOP_LEFT">
+        <guielement name="mainwindow_topbar_drawable" ninepatch="panel01" ninepatch_coordinates="4,4,4,4"
+                  y="100%ph" width="100%pw" height="6 mm" alignToParent="TOP_LEFT">
+            <label text="MainWindow" x="2mm" y="100%PH, -2mm" alignToParent="TOP_LEFT"/>
         </guielement>
+    </drawable>
 
-        <guielement inherit="standard_button_base" name="btn_ok" alignToParent="BOTTOM_LEFT"></guielement>
-        <guielement inherit="standard_button_base" name="btn_cancel" x="50 %PW" alignToParent="BOTTOM_LEFT"></guielement>
-    </guielement>
+    <drawable name="mainwindow_t" width="300" height="300" alignToParent="MID_MID">
+
+        <!-- Main window   -->
+        <drawable name="background" ninepatch="panel01" ninepatch_coordinates="4,4,4,4" width="100%PW" height="100%PH, -0mm">
+
+        </drawable>
+
+    </drawable>
+
+    <drawable name="window1" inherit="mainwindow_t" x="0" y="0">
+        <drawable name="window1_topbar" inherit="mainwindow_topbar_t"/>
+        <button name="btn1" inherit="btn_template" button_text = "Knapp 1" x="2mm" y="100%PH, -25mm"/>
+        <button name="btn2" inherit="btn_template" button_text="Knapp 2" x="2mm" y="100%PH, -40mm"/>
+    </drawable>
+
 
     <drawable name="test_window" image="panel01" x="50%PW" y="100%PH, -20mm" width="500" height="400" alignToParent="TOP_MID">
         <drawable tag="side_bar" image="9pbtn1" x = "0" y="100 %PH" width = "10 mm" height="100 %PH" alignToParent="TOP_LEFT"/>

@@ -32,8 +32,8 @@ public class GuiPanel extends GuiElement {
     public void draw(SpriteBatch spriteBatch){
         if(mEnabled) {
             mImgBackground.draw(spriteBatch);//, mRegion);
-            super.draw(spriteBatch);
         }
+        super.draw(spriteBatch);
     }
 
     public void invalidate(GuiElement parent){

@@ -63,11 +63,13 @@ public class GuiDrawable extends GuiElement {
 
     @Override
     public void draw(SpriteBatch spriteBatch) {
-        if(mTexture != null){
-            spriteBatch.draw(mTexture, mRegion.getX(), mRegion.getY(), mRegion.getW(), mRegion.getH());
-        }
-        if(mNinePatch != null){
-            mNinePatch.draw(spriteBatch, mRegion.getX(), mRegion.getY(), mRegion.getW(), mRegion.getH());
+        if(mEnabled) {
+            if (mTexture != null) {
+                spriteBatch.draw(mTexture, mRegion.getX(), mRegion.getY(), mRegion.getW(), mRegion.getH());
+            }
+            if (mNinePatch != null) {
+                mNinePatch.draw(spriteBatch, mRegion.getX(), mRegion.getY(), mRegion.getW(), mRegion.getH());
+            }
         }
         super.draw(spriteBatch);
     }

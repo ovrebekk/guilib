@@ -1,7 +1,9 @@
 package com.mygdx.guilib_prot.guilib;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.XmlReader;
@@ -44,6 +46,7 @@ public class GuiElement {
 
     // Elementary properties
     protected boolean             mEnabled;
+    protected boolean             mDebugMode;       // Used to draw debug info on gui elements
     // TODO: Consider padding?
 
     public GuiElement() {
@@ -54,6 +57,7 @@ public class GuiElement {
         mReferenceMap = null;
     }
 
+    // Copy constructor
     public GuiElement(GuiElement clone, GuiElement parent){
         mId = clone.mId;
         mRegion = new GuiRectangle(clone.mRegion);
@@ -205,6 +209,34 @@ public class GuiElement {
         mInheritFrom = null;
     }
 
+    public boolean pushDebugCommand(String command){
+        boolean returnValue = false;
+        // Process incomming commands
+        if(command.startsWith("debug ")){
+            if(command.endsWith(" on")){
+                mDebugMode = true;
+            }
+            else if(command.endsWith(" off")){
+                mDebugMode = false;
+            }
+            else if(command.endsWith(" toggle")){
+                mDebugMode = !mDebugMode;
+                //Gdx.app.log("GuiElement", "Debug mode toggle");
+            }
+        }
+
+        // Forward command to children
+        if(mChildren != null){
+            for(GuiElement child : mChildren){
+                if(returnValue) return true;
+                returnValue = child.pushDebugCommand(command);
+            }
+        }
+        // A return value of true signals that the command is consumed, and should not be propagated further
+        return returnValue;
+    }
+
+
     // References are used to allow a template element to have open fields that can be replaced by the inheriter
     // This function allows the GuiElement to report which references it is looking for
     public void publishReferenceParameters(Map<String, String> referenceList){
@@ -228,6 +260,14 @@ public class GuiElement {
                     mChildren.get(i).draw(spriteBatch);
                 }
             }
+        }
+        if(mDebugMode){
+            spriteBatch.end();
+            GuiManager.mShapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            GuiManager.mShapeRenderer.setColor(Color.RED);
+            GuiManager.mShapeRenderer.rect(mRegion.getX(), mRegion.getY(), mRegion.getW(), mRegion.getH());
+            GuiManager.mShapeRenderer.end();
+            spriteBatch.begin();
         }
     }
 
